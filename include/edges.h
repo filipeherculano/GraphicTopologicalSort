@@ -7,41 +7,41 @@ using namespace std;
  */
 class Edges
 {
-  public:
-    /**
+public:
+  /**
      * @brief Construct a new Edges object
      * @param source Source building
      * @param destination Destination building
      */
-    Edges(Building source, Building destination);
+  Edges(Building source, Building destination);
 
-    void draw();
+  void draw();
 
-    /**
+  /**
      * @brief Verify if passed building is the same as the source
      * @param s Candidate building
      * @return true if is the same, false otherwise
      */
-    bool is_source(Building s);
+  bool is_source(Building s);
 
-    /**
+  /**
      * @brief Destroy current edge
      */
-    void destroy();
+  void destroy();
 
-  private:
-    /**
+private:
+  /**
      * @brief Boolena variable determining if current edge is destroyed
      */
-    bool is_destroyed_;
+  bool is_destroyed_;
 
-    /**
+  /**
      * @brief Source building
      */
-    Building source_;
+  Building source_;
 
-    /**
+  /**
      * @brief Destination building
      */
-    Building destination_;
+  Building destination_;
 };

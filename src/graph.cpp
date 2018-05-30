@@ -2,7 +2,7 @@
 
 #include <bits/stdc++.h>
 
-Graph::Graph(int n, int m) : number_nodes_(n), number_edges_(m)
+Graph::Graph(int n, int m) : number_nodes_(n), number_edges_(m), ambient_(Ambient(50, 100))
 {
 	// TODO this should be refactored to create a generic DAG
 	visited_.resize(number_nodes_, false);
@@ -64,6 +64,11 @@ void Graph::draw_vertex()
 {
 	for (int i = 0; i < number_nodes_; i++)
 		buildings_[i].draw();
+}
+
+void Graph::draw_plane()
+{
+	ambient_.draw();
 }
 
 void Graph::destroy_node()

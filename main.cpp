@@ -1,6 +1,9 @@
+#include "include/graph.h"
+
 #include <GL/glut.h>
 
-#include "include/graph.h"
+#include <unistd.h>
+#include <math.h>
 
 #define ALTURA 700
 #define LARGURA 700
@@ -11,6 +14,9 @@ double rotationX = 20.0;
 double last_press_x = 0.0;
 double last_press_y = 0.0;
 
+const float DEG2RAD = 3.14159 / 180;
+const double radius = 200.0;
+
 Graph *G;
 
 void Iluminacao()
@@ -18,44 +24,50 @@ void Iluminacao()
 	GLfloat luzAmbiente[4] = {0.0, 0.0, 0.0, 1.0};
 	GLfloat luzDifusa[4] = {1.0, 1.0, 1.0, 1.0};
 	GLfloat luzEspecular[4] = {1.0, 1.0, 1.0, 1.0};
-	GLfloat posicaoLuz[4] = {0.0, 50.0, -50.0, 1.0};
-
-	GLfloat ka[4] = {0.0, 0.0, 1.0, 1.0};	 /* Reflete porcentagens da cor ambiente */
-	GLfloat kd[4] = {0.0, 0.0, 0.46, 1.0};	/* Reflete porcentagens da cor difusa */
-	GLfloat ks[4] = {0.03, 0.33, 0.98, 0.93}; /* Reflete porcentagens da cor especular */
-	GLfloat ke[4] = {0.29, 0.0, 0.26, 0.01};
-	GLfloat shininess = 40.0;
+	GLfloat posicaoLuz[4] = {50.0, 50.0, 50.0, 1.0};
 
 	glLightfv(GL_LIGHT0, GL_AMBIENT, luzAmbiente);
 	glLightfv(GL_LIGHT0, GL_DIFFUSE, luzDifusa);
 	glLightfv(GL_LIGHT0, GL_SPECULAR, luzEspecular);
 	glLightfv(GL_LIGHT0, GL_POSITION, posicaoLuz);
 
+	GLfloat ka[4] = {0.11, 0.06, 0.11, 1.0}; /* Reflete porcentagens da cor ambiente */
+	GLfloat kd[4] = {0.43, 0.47, 0.54, 1.0}; /* Reflete porcentagens da cor difusa */
+	GLfloat ks[4] = {0.33, 0.33, 0.52, 1.0}; /* Reflete porcentagens da cor especular */
+	GLfloat ke[4] = {0.0, 0.0, 0.0, 0.0};
+	GLfloat shininess = 5.0;
+
 	glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, ka);
 	glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, kd);
 	glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, ks);
-	glMaterialfv(GL_FRONT, GL_SHININESS, &shininess);
+	glMaterialfv(GL_FRONT_AND_BACK, GL_SHININESS, &shininess);
 	glMaterialfv(GL_FRONT_AND_BACK, GL_EMISSION, ke);
+
+	glColor3f(1.0, 1.0, 0.4);
+	glTranslatef(50.0, 50.0, 50.0);
+	glutSolidSphere(3, 200, 200);
+	glTranslatef(-50.0, -50.0, -50.0);
 }
 
-void Desenha()
+void Draw()
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 
-	gluLookAt(0.0, 0.0, -100.0, /* eye  */
-			  0.0, 0.0, 0.0,	/* look */
-			  0.0, 1.0, 0.0);   /*  up  */
+	gluLookAt(0.0, 0.0, 200.0, /* eye  */
+			  0.0, 0.0, 0.0,   /* look */
+			  0.0, 1.0, 0.0);  /*  up  */
 
-	glRotated(rotationY, -1.0, 0.0, 0.0);
-	glRotated(rotationX, 0.0, -1.0, 0.0);
+	glRotated(rotationY, 1.0, 0.0, 0.0);
+	glRotated(rotationX, 0.0, 1.0, 0.0);
 
 	Iluminacao();
 
 	G->draw_vertex();
 	G->draw_edges();
+	G->draw_plane();
 
 	glFlush();
 }
@@ -65,7 +77,13 @@ void specialKeys(unsigned char key, int x, int y)
 	if (key == 'N' || key == 'n')
 	{
 		G->destroy_node();
-		Desenha();
+
+		// Dying animation
+		for (int i = 0; i < 12; i++)
+		{
+			Draw();
+			usleep(80000);
+		}
 	}
 }
 
@@ -82,20 +100,16 @@ void Mouse_Motion(int x, int y)
 
 void Mouse_Press(int button, int state, int x, int y)
 {
-	if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN)
-	{
-		last_press_x = x;
-		last_press_y = y;
-	}
+	// TODO
 }
 
 void Inicializa()
 {
-	glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+	glClearColor(0.0f, 0.0f, 0.13f, 1.0f);
 
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-	gluPerspective(60.0, 1.0, 10.0, -10.0);
+	gluPerspective(50.0, 1.0, 100.0, -100.0);
 
 	glEnable(GL_DEPTH_TEST);
 	glDepthFunc(GL_LESS);
@@ -112,8 +126,8 @@ int main(int argc, char **argv)
 	glutInitDisplayMode(GLUT_DEPTH | GLUT_RGB);
 	glutInitWindowSize(LARGURA, ALTURA);
 	glutInitWindowPosition(100, 100);
-	glutCreateWindow("WAR MAP");
-	glutDisplayFunc(Desenha);
+	glutCreateWindow("WAR MAP - Graphic Topological Sort");
+	glutDisplayFunc(Draw);
 	glutMouseFunc(Mouse_Press);
 	glutMotionFunc(Mouse_Motion);
 	glutKeyboardFunc(specialKeys);

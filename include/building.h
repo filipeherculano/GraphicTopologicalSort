@@ -3,8 +3,8 @@
  */
 class Building
 {
-  public:
-    /**
+public:
+  /**
      * @brief Construct a new Building object
      * @param x Coordinate
      * @param y Coordinate
@@ -12,64 +12,64 @@ class Building
      * @param side Side size
      * @param height Height size
      */
-    Building(int x, int y, int z, int side, int height);
+  Building(int x, int y, int z, int side, int height);
 
-    /**
+  /**
      * @brief Draws the current building
      */
-    void draw();
+  void draw();
 
-    /**
+  /**
      * @brief Destroys the current building
      */
-    void destroy();
+  void destroy();
 
-    /**
+  /**
      * @brief Get x coordinate
      * @return int 
      */
-    int x();
+  int x();
 
-    /**
+  /**
      * @brief Get y coordinate
      * @return int 
      */
-    int y();
+  int y();
 
-    /**
+  /**
      * @brief Get z coordinate
      * @return int 
      */
-    int z();
+  int z();
 
-  private:
-    /**
+private:
+  /**
      * @brief X coordinate
      */
-    int x_;
+  int x_;
 
-    /**
+  /**
      * @brief Y coordinate
      */
-    int y_;
+  int y_;
 
-    /**
+  /**
      * @brief Z coordinate
      */
-    int z_;
+  int z_;
 
-    /**
+  /**
      * @brief Side size of the polygon
      */
-    int side_;
+  int side_;
 
-    /**
+  /**
      * @brief Height size of the polygon
      */
-    int height_;
+  int height_;
 
-    /**
+  /**
      * @brief Boolean variable determining if current building is destroyed already
      */
-    bool is_destroyed_;
+  bool is_destroyed_;
 };

@@ -1,6 +1,7 @@
 #include <vector>
 #include <tuple>
 
+#include "ambient.h"
 #include "edges.h"
 
 using namespace std;
@@ -24,14 +25,19 @@ class Graph
 	void topological_sort();
 
 	/**
-	 * @brief Calls each vertex drawing function
-	 */
-	void draw_vertex();
-
-	/**
 	 * @brief Calls each edge drawing function
 	 */
 	void draw_edges();
+
+	/**
+	 * @brief Draws plane
+	 */
+	void draw_plane();
+
+	/**
+	 * @brief Calls each vertex drawing function
+	 */
+	void draw_vertex();
 
 	/**
 	 * @brief Destroy node at the head of the topological sort
@@ -39,6 +45,12 @@ class Graph
 	void destroy_node();
 
   private:
+
+	/**
+	 * @brief Class containing ambient drawing functions
+	 */
+	Ambient ambient_;
+
 	/**
 	 * @brief Number of nodes in the graph
 	 */

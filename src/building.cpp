@@ -11,10 +11,17 @@ void Building::draw()
 {
     // TODO we are missing windows!
 
-    if (is_destroyed_)
+    if (is_destroyed_ && y_ > -12)
+        y_--;
+    else if (is_destroyed_ && y_ <= -12)
         return;
 
-    // front
+    glColor3f(0.8, 0.8, 0.8);
+    glTranslatef(x_, y_, z_);
+    glutSolidCube(side_);
+    glTranslatef(-x_, -y_, -z_);
+
+    /*    // front
     glBegin(GL_QUADS);
     glVertex3i(x_ + (side_ / 2), y_, z_ - (side_ / 2));
     glVertex3i(x_ - (side_ / 2), y_, z_ - (side_ / 2));
@@ -61,6 +68,7 @@ void Building::draw()
     glVertex3i(x_ - (side_ / 2), y_ + height_, z_ - (side_ / 2));
     glVertex3i(x_ + (side_ / 2), y_ + height_, z_ - (side_ / 2));
     glEnd();
+*/
 }
 
 int Building::x()

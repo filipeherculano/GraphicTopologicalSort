@@ -18,7 +18,7 @@ void Edges::draw()
     glBegin(GL_LINES);
     glColor3f(0.0, 0.0, 1.0);
     glVertex3i(source_.x(), source_.y(), source_.z());
-    glColor3f(0.0, 1.0, 0.0);
+    glColor3f(1.0, 0.0, 0.0);
     glVertex3i(destination_.x(), destination_.y(), destination_.z());
     glEnd();
 }
