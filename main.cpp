@@ -2,6 +2,7 @@
 
 #include <GL/glut.h>
 
+#include <iostream>
 #include <unistd.h>
 #include <math.h>
 
@@ -13,6 +14,10 @@ double rotationX = 20.0;
 
 double last_press_x = 0.0;
 double last_press_y = 0.0;
+
+double scale_x = 1;
+double scale_y = 1;
+double scale_z = 1;
 
 const float DEG2RAD = 3.14159 / 180;
 const double radius = 200.0;
@@ -62,6 +67,7 @@ void Draw()
 
 	glRotated(rotationY, 1.0, 0.0, 0.0);
 	glRotated(rotationX, 0.0, 1.0, 0.0);
+	glScaled(scale_x, scale_y, scale_z);
 
 	Iluminacao();
 
@@ -77,14 +83,25 @@ void specialKeys(unsigned char key, int x, int y)
 	if (key == 'N' || key == 'n')
 	{
 		G->destroy_node();
-
-		// Dying animation
 		for (int i = 0; i < 12; i++)
 		{
 			Draw();
 			usleep(80000);
 		}
 	}
+	else if (key == 'W' || key == 'w')
+	{
+		scale_x += 0.1;
+		scale_y += 0.1;
+		scale_z += 0.1;
+	}
+	else if (key == 'S' || key == 's')
+	{
+		scale_x -= 0.1;
+		scale_y -= 0.1;
+		scale_z -= 0.1;
+	}
+	glutPostRedisplay();
 }
 
 void Mouse_Motion(int x, int y)
@@ -130,6 +147,7 @@ int main(int argc, char **argv)
 	glutDisplayFunc(Draw);
 	glutMouseFunc(Mouse_Press);
 	glutMotionFunc(Mouse_Motion);
+	//glutMouseWheelFunc();
 	glutKeyboardFunc(specialKeys);
 	G = new Graph(4, 3);
 	G->topological_sort();

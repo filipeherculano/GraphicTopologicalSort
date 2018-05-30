@@ -11,64 +11,16 @@ void Building::draw()
 {
     // TODO we are missing windows!
 
-    if (is_destroyed_ && y_ > -12)
+    if(!is_destroyed_) glColor3f(0.8, 0.8, 0.8);
+    else if (is_destroyed_ && y_ > -12){
         y_--;
-    else if (is_destroyed_ && y_ <= -12)
+        glColor3f(1.0 , 0.8 + ((double) y_ * 0.05), 0.8 + ((double) y_ * 0.05));
+    } else if (is_destroyed_ && y_ <= -12)
         return;
-
-    glColor3f(0.8, 0.8, 0.8);
+    
     glTranslatef(x_, y_, z_);
     glutSolidCube(side_);
     glTranslatef(-x_, -y_, -z_);
-
-    /*    // front
-    glBegin(GL_QUADS);
-    glVertex3i(x_ + (side_ / 2), y_, z_ - (side_ / 2));
-    glVertex3i(x_ - (side_ / 2), y_, z_ - (side_ / 2));
-    glVertex3i(x_ - (side_ / 2), y_ + height_, z_ - (side_ / 2));
-    glVertex3i(x_ + (side_ / 2), y_ + height_, z_ - (side_ / 2));
-    glEnd();
-
-    // back
-    glBegin(GL_QUADS);
-    glVertex3i(x_ + (side_ / 2), y_, z_ + (side_ / 2));
-    glVertex3i(x_ - (side_ / 2), y_, z_ + (side_ / 2));
-    glVertex3i(x_ - (side_ / 2), y_ + height_, z_ + (side_ / 2));
-    glVertex3i(x_ + (side_ / 2), y_ + height_, z_ + (side_ / 2));
-    glEnd();
-
-    // left
-    glBegin(GL_QUADS);
-    glVertex3i(x_ - (side_ / 2), y_, z_ - (side_ / 2));
-    glVertex3i(x_ - (side_ / 2), y_, z_ + (side_ / 2));
-    glVertex3i(x_ - (side_ / 2), y_ + height_, z_ + (side_ / 2));
-    glVertex3i(x_ - (side_ / 2), y_ + height_, z_ - (side_ / 2));
-    glEnd();
-
-    // right
-    glBegin(GL_QUADS);
-    glVertex3i(x_ + (side_ / 2), y_, z_ - (side_ / 2));
-    glVertex3i(x_ + (side_ / 2), y_, z_ + (side_ / 2));
-    glVertex3i(x_ + (side_ / 2), y_ + height_, z_ + (side_ / 2));
-    glVertex3i(x_ + (side_ / 2), y_ + height_, z_ - (side_ / 2));
-    glEnd();
-
-    // bottom
-    glBegin(GL_QUADS);
-    glVertex3i(x_ + (side_ / 2), y_, z_ + (side_ / 2));
-    glVertex3i(x_ - (side_ / 2), y_, z_ + (side_ / 2));
-    glVertex3i(x_ - (side_ / 2), y_, z_ - (side_ / 2));
-    glVertex3i(x_ + (side_ / 2), y_, z_ - (side_ / 2));
-    glEnd();
-
-    // top
-    glBegin(GL_QUADS);
-    glVertex3i(x_ + (side_ / 2), y_ + height_, z_ + (side_ / 2));
-    glVertex3i(x_ - (side_ / 2), y_ + height_, z_ + (side_ / 2));
-    glVertex3i(x_ - (side_ / 2), y_ + height_, z_ - (side_ / 2));
-    glVertex3i(x_ + (side_ / 2), y_ + height_, z_ - (side_ / 2));
-    glEnd();
-*/
 }
 
 int Building::x()
