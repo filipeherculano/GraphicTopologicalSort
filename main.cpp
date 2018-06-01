@@ -24,6 +24,11 @@ const double radius = 200.0;
 
 Graph *G;
 
+void mainMenu (int id);
+void destroyNode(void);
+void zoomIn(void);
+void zoomOut(void);
+
 void Iluminacao()
 {
 	GLfloat luzAmbiente[4] = {0.0, 0.0, 0.0, 1.0};
@@ -78,29 +83,29 @@ void Draw()
 	glFlush();
 }
 
-void specialKeys(unsigned char key, int x, int y)
-{
-	if (key == 'N' || key == 'n')
-	{
-		G->destroy_node();
-		for (int i = 0; i < 12; i++)
-		{
-			Draw();
-			usleep(80000);
-		}
+void specialKeys(unsigned char key, int x, int y) {
+	switch(key) {
+		case 'n':
+			destroyNode();
+			break;
+		
+		case 'w':
+			zoomIn();
+			break;
+
+		case 's':
+			zoomOut();
+			break;
+		
+		case 'e':
+			exit(0);
+			break;
+		
+		default:
+			cout << "Acao nao encontrada!" << endl;
+			break;
 	}
-	else if (key == 'W' || key == 'w')
-	{
-		scale_x += 0.1;
-		scale_y += 0.1;
-		scale_z += 0.1;
-	}
-	else if (key == 'S' || key == 's')
-	{
-		scale_x -= 0.1;
-		scale_y -= 0.1;
-		scale_z -= 0.1;
-	}
+
 	glutPostRedisplay();
 }
 
@@ -149,10 +154,61 @@ int main(int argc, char **argv)
 	glutMotionFunc(Mouse_Motion);
 	//glutMouseWheelFunc();
 	glutKeyboardFunc(specialKeys);
+
+	glutCreateMenu(mainMenu);
+		glutAddMenuEntry ("Remove Node       (N)", 1);
+       	glutAddMenuEntry ("Zoom In           (W)", 2);
+		glutAddMenuEntry ("Zoom Out          (S)", 3);
+       	glutAddMenuEntry ("Exit", 4);
+	glutAttachMenu (GLUT_RIGHT_BUTTON);
+
 	G = new Graph(4, 3);
 	G->topological_sort();
 	Inicializa();
 	//CriarMenu();
 	glutMainLoop();
 	return 0;
+}
+
+void destroyNode() {
+	G->destroy_node();
+	for (int i = 0; i < 12; i++)
+	{
+		Draw();
+		usleep(80000);
+	}
+}
+
+void zoomIn(void) {
+	scale_x += 0.1;
+    scale_y += 0.1;
+	scale_z += 0.1;
+	glutPostRedisplay();
+}
+
+void zoomOut(void) {
+	scale_x -= 0.1;
+    scale_y -= 0.1;
+	scale_z -= 0.1;
+	glutPostRedisplay();
+}
+
+/* main popup menu - actions */
+void mainMenu (int id) {
+    switch (id) {
+		case 1 :
+			destroyNode();
+			break;
+		case 2 :
+			zoomIn();
+			break;
+		case 3 :
+			zoomOut();
+			break;
+		case 4 :
+			exit (0);
+			break;
+		default :
+			break;
+    }
 }
