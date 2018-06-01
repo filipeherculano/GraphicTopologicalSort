@@ -19,9 +19,6 @@ double scale_x = 1;
 double scale_y = 1;
 double scale_z = 1;
 
-const float DEG2RAD = 3.14159 / 180;
-const double radius = 200.0;
-
 Graph *G;
 
 void Iluminacao()
@@ -61,7 +58,7 @@ void Draw()
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 
-	gluLookAt(0.0, 0.0, 200.0, /* eye  */
+	gluLookAt(0.0, 0.0, 300.0, /* eye  */
 			  0.0, 0.0, 0.0,   /* look */
 			  0.0, 1.0, 0.0);  /*  up  */
 
@@ -100,6 +97,15 @@ void specialKeys(unsigned char key, int x, int y)
 		scale_x -= 0.1;
 		scale_y -= 0.1;
 		scale_z -= 0.1;
+	}
+	else if (key == 'I' || key == 'i')
+	{
+		G->next_node();
+		for (int i = 0; i < 12; i++)
+		{
+			Draw();
+			usleep(80000);
+		}
 	}
 	glutPostRedisplay();
 }
@@ -149,7 +155,7 @@ int main(int argc, char **argv)
 	glutMotionFunc(Mouse_Motion);
 	//glutMouseWheelFunc();
 	glutKeyboardFunc(specialKeys);
-	G = new Graph(4, 3);
+	G = new Graph(12, 14); // 12, 14
 	G->topological_sort();
 	Inicializa();
 	//CriarMenu();

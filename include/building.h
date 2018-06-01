@@ -42,7 +42,45 @@ public:
      */
   int z();
 
+  /**
+   * @brief Set the y object
+   * @param y 
+   */
+  void set_y(int y);
+
+  /**
+   * @brief Starts the current building
+   */
+  void start();
+
+  /**
+   * @brief Checks if the current building is already built
+   * @return true if is built, false otherwise
+   */
+  bool built();
+
 private:
+  /**
+   * @brief State of the building
+   */
+  enum State
+  {
+    BUILDING = 0,
+    ALIVE = 1,
+    DESTROYING = 2,
+    DEAD = 3
+  };
+
+  /**
+   * @brief Building current state
+   */
+  State state_;
+
+  /**
+   * @brief Updates current building state
+   */
+  void update_state();
+
   /**
      * @brief X coordinate
      */

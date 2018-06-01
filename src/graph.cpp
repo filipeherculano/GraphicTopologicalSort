@@ -7,27 +7,60 @@ Graph::Graph(int n, int m) : number_nodes_(n), number_edges_(m), ambient_(Ambien
 	// TODO this should be refactored to create a generic DAG
 	visited_.resize(number_nodes_, false);
 
-	buildings_.push_back(Building(10, 0, 10, 10, 17));
-	buildings_.push_back(Building(10, 0, -10, 10, 17));
-	buildings_.push_back(Building(-10, 0, -10, 10, 17));
-	buildings_.push_back(Building(-10, 0, 10, 10, 17));
+	buildings_.push_back(Building(0, 0, 70, 10, 17));
+	buildings_.push_back(Building(-55, 0, -25, 10, 17));
+	buildings_.push_back(Building(55, 0, 70, 10, 17));
+	buildings_.push_back(Building(0, 0, -25, 10, 17));
+	buildings_.push_back(Building(0, 0, 25, 10, 17));
+	buildings_.push_back(Building(-55, 0, 25, 10, 17));
+	buildings_.push_back(Building(-55, 0, 70, 10, 17));
+	buildings_.push_back(Building(55, 0, 25, 10, 17));
+	buildings_.push_back(Building(55, 0, -25, 10, 17));
+	buildings_.push_back(Building(55, 0, -70, 10, 17));
+	buildings_.push_back(Building(-55, 0, -70, 10, 17));
+	buildings_.push_back(Building(0, 0, -70, 10, 17));
 
-	adj_[0].push_back(1);
-	adj_[0].push_back(2);
-	adj_[3].push_back(0);
+	adj_[0].push_back(4);
+	adj_[0].push_back(5);
+	adj_[0].push_back(7);
+	adj_[3].push_back(9);
+	adj_[4].push_back(2);
+	adj_[4].push_back(8);
+	adj_[4].push_back(10);
+	adj_[6].push_back(0);
+	adj_[6].push_back(5);
+	adj_[7].push_back(1);
+	adj_[7].push_back(3);
+	adj_[11].push_back(3);
+	adj_[11].push_back(9);
+	adj_[11].push_back(10);
 
 	for (int i = 0; i < number_nodes_; i++)
 	{
 		for (int j = 0; j < adj_[i].size(); j++)
 		{
-			connect(buildings_[i], buildings_[adj_[i][j]]);
+			connect(buildings_[i], buildings_[adj_[i][j]], i, adj_[i][j]);
 		}
 	}
 }
 
-void Graph::connect(Building source, Building destination)
+void Graph::next_node()
+{
+	if (current_ < number_nodes_)
+		buildings_[current_].start(); //Building
+	for (int i = 0; i < end_points_.size(); i++)
+	{
+		int u = end_points_[i].first, v = end_points_[i].second;
+		if (buildings_[u].built() && buildings_[v].built())
+			edges_[i].start();
+	}
+	current_++;
+}
+
+void Graph::connect(Building source, Building destination, int u, int v)
 {
 	edges_.push_back(Edges(source, destination));
+	end_points_.push_back(make_pair(u, v));
 }
 
 void Graph::topological_sort()
