@@ -9,6 +9,30 @@
 #define ALTURA 700
 #define LARGURA 700
 
+/* lighting variables - begin */
+
+//angle of rotation
+GLfloat angle = 0.0;
+
+//diffuse light color variables
+GLfloat dlr = 1.0;
+GLfloat dlg = 1.0;
+GLfloat dlb = 1.0;
+
+//ambient light color variables
+GLfloat alr = 1.0;
+GLfloat alg = 1.0;
+GLfloat alb = 1.0;
+
+//light position variables
+GLfloat lx = 0.0;
+GLfloat ly = 0.0;
+GLfloat lz = 1.0;
+GLfloat lw = 0.0;
+
+/* lighting variables - end */
+
+
 double rotationY = 20.0;
 double rotationX = 20.0;
 
@@ -26,6 +50,8 @@ Graph *G;
 
 void mainMenu (int id);
 void destroyNode(void);
+void zoom(int id);
+void moveLight(int id);
 void zoomIn(void);
 void zoomOut(void);
 
@@ -62,25 +88,36 @@ void Iluminacao()
 void Draw()
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 
-	gluLookAt(0.0, 0.0, 200.0, /* eye  */
-			  0.0, 0.0, 0.0,   /* look */
-			  0.0, 1.0, 0.0);  /*  up  */
+	GLfloat DiffuseLight[] = {dlr, dlg, dlb};
+    GLfloat AmbientLight[] = {alr, alg, alb};
+	glLightfv (GL_LIGHT0, GL_DIFFUSE, DiffuseLight); //change the light accordingly
+    glLightfv (GL_LIGHT1, GL_AMBIENT, AmbientLight); //change the light accordingly
+    GLfloat LightPosition[] = {lx, ly, lz, lw}; //set the LightPosition to the specified values
+    glLightfv (GL_LIGHT0, GL_POSITION, LightPosition); //change the light accordingly
+    gluLookAt (0.0, 0.0, 200.0, 
+			0.0, 0.0, 0.0, 
+			0.0, 1.0, 0.0);
+
+	// gluLookAt(0.0, 0.0, 200.0, /* eye  */
+	// 		  0.0, 0.0, 0.0,   /* look */
+	// 		  0.0, 1.0, 0.0);  /*  up  */
 
 	glRotated(rotationY, 1.0, 0.0, 0.0);
 	glRotated(rotationX, 0.0, 1.0, 0.0);
 	glScaled(scale_x, scale_y, scale_z);
 
-	Iluminacao();
+	// Iluminacao();
 
 	G->draw_vertex();
 	G->draw_edges();
 	G->draw_plane();
 
-	glFlush();
+	glutSwapBuffers(); //swap the buffers
+    angle++; //increase the angle
+	//glFlush();
 }
 
 void specialKeys(unsigned char key, int x, int y) {
@@ -99,6 +136,22 @@ void specialKeys(unsigned char key, int x, int y) {
 		
 		case 'e':
 			exit(0);
+			break;
+		
+		case 'u':
+			ly += 2.0;
+			break;
+		
+		case 'j':
+			ly -= 2.0;
+			break;
+		
+		case 'k':
+			lx += 2.0;
+			break;
+		
+		case 'h':
+			lx -= 2.0;
 			break;
 		
 		default:
@@ -142,8 +195,10 @@ void Inicializa()
 	glShadeModel(GL_SMOOTH);
 }
 
-int main(int argc, char **argv)
-{
+int main(int argc, char **argv) {
+
+	int zoom_menu, lighting_menu;
+
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_DEPTH | GLUT_RGB);
 	glutInitWindowSize(LARGURA, ALTURA);
@@ -155,11 +210,21 @@ int main(int argc, char **argv)
 	//glutMouseWheelFunc();
 	glutKeyboardFunc(specialKeys);
 
+	zoom_menu = glutCreateMenu(zoom);
+		glutAddMenuEntry("Zoom In   (w)", 1);
+		glutAddMenuEntry("Zoom Out  (s)", 2);
+
+	lighting_menu = glutCreateMenu(moveLight);
+		glutAddMenuEntry("Up     (u)", 1);
+		glutAddMenuEntry("Down   (j)", 2);
+		glutAddMenuEntry("Left   (h)", 3);
+		glutAddMenuEntry("Right  (k)", 4);
+
 	glutCreateMenu(mainMenu);
-		glutAddMenuEntry ("Remove Node       (N)", 1);
-       	glutAddMenuEntry ("Zoom In           (W)", 2);
-		glutAddMenuEntry ("Zoom Out          (S)", 3);
-       	glutAddMenuEntry ("Exit", 4);
+		glutAddMenuEntry("Remove Node       (n)", 1);
+       	glutAddSubMenu("Zoom", zoom_menu);
+		glutAddSubMenu("Lighting", lighting_menu);
+       	glutAddMenuEntry("Exit", 4);
 	glutAttachMenu (GLUT_RIGHT_BUTTON);
 
 	G = new Graph(4, 3);
@@ -212,3 +277,39 @@ void mainMenu (int id) {
 			break;
     }
 }
+
+void zoom(int id) {
+
+	switch(id){
+		case 1:
+			zoomIn();
+			break;
+		case 2:
+			zoomOut();
+			break;
+		default:
+			break;
+	}
+}
+
+void moveLight(int id) {
+	switch(id){
+		case 1:
+			ly += 2.0;
+			break;
+		case 2:
+			ly -= 2.0;
+			break;
+		case 3:
+			lx -= 2.0;
+			break;
+		case 4:
+			lx += 2.0;
+			break;
+		default:
+			break;
+	}
+	glutPostRedisplay();
+}
+
+
