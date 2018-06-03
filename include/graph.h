@@ -44,8 +44,12 @@ class Graph
 	 */
 	void destroy_node();
 
-  private:
+	/**
+	 * @brief Creates a current node on the field
+	 */
+	void next_node();
 
+  private:
 	/**
 	 * @brief Class containing ambient drawing functions
 	 */
@@ -84,7 +88,7 @@ class Graph
 	/**
 	 * @brief Adjacency list of graph topology
 	 */
-	vector<int> adj_[4];
+	vector<int> adj_[12];
 
 	/**
 	 * @brief DFS (Depth First Search) used to create topological sort
@@ -97,5 +101,15 @@ class Graph
 	 * @param source Source building
 	 * @param destination Destination building
 	 */
-	void connect(Building source, Building destination);
+	void connect(Building source, Building destination, int u, int v);
+
+	/**
+	 * @brief Current node to be created
+	 */
+	int current_ = 0;
+
+	/**
+	 * @brief Vector with the indices of each node linked
+	 */
+	vector<pair<int, int>> end_points_;
 };

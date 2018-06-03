@@ -3,8 +3,10 @@
 #include <GL/glut.h>
 
 Edges::Edges(Building source, Building destination)
-    : source_(source), destination_(destination), is_destroyed_(false)
+    : source_(source), destination_(destination), is_destroyed_(true)
 {
+	source_.set_y(source_.y() + 12);
+	destination_.set_y(destination_.y() + 12);
 }
 
 void Edges::draw()
@@ -33,4 +35,8 @@ bool Edges::is_source(Building s)
 void Edges::destroy()
 {
     is_destroyed_ = true;
+}
+
+void Edges::start(){
+	is_destroyed_ = false;	
 }

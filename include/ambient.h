@@ -6,7 +6,6 @@ using namespace std;
 class Ambient
 {
 public:
-
   /**
    * @brief Construct a new Ambient object
    * @param stars Number of stars
@@ -20,7 +19,6 @@ public:
   void draw();
 
 private:
-  
   /**
    * @brief Draws field with specified radius
    * @param radius 

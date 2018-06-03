@@ -29,6 +29,11 @@ public:
      */
   void destroy();
 
+  /**
+   * @brief Starts the current edge
+   */
+  void start();
+
 private:
   /**
      * @brief Boolena variable determining if current edge is destroyed
