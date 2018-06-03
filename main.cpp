@@ -98,10 +98,6 @@ void Draw()
 			0.0, 0.0, 0.0, 
 			0.0, 1.0, 0.0);
 
-	// gluLookAt(0.0, 0.0, 200.0, /* eye  */
-	// 		  0.0, 0.0, 0.0,   /* look */
-	// 		  0.0, 1.0, 0.0);  /*  up  */
-
 	glRotated(rotationY, 1.0, 0.0, 0.0);
 	glRotated(rotationX, 0.0, 1.0, 0.0);
 	glScaled(scale_x, scale_y, scale_z);
@@ -112,12 +108,20 @@ void Draw()
 	G->draw_edges();
 	G->draw_plane();
 
-	glutSwapBuffers(); //swap the buffers
-    angle++; //increase the angle
-	//glFlush();
+	glutSwapBuffers();
+    angle++; //increase the anglessss
+}
+
+void drawDfs(){
+	G->next_node();
+	for(int i = 0; i < 12; i++){
+		Draw();
+		usleep(80000);
+	}
 }
 
 void specialKeys(unsigned char key, int x, int y) {
+
 	switch(key) {
 		case 'n':
 			destroyNode();
@@ -149,6 +153,10 @@ void specialKeys(unsigned char key, int x, int y) {
 		
 		case 'h':
 			lx -= 2.0;
+			break;
+		
+		case 'i':
+			drawDfs();
 			break;
 		
 		default:
@@ -204,9 +212,8 @@ int main(int argc, char **argv) {
 	glutDisplayFunc(Draw);
 	glutMouseFunc(Mouse_Press);
 	glutMotionFunc(Mouse_Motion);
-	//glutMouseWheelFunc();
 	glutKeyboardFunc(specialKeys);
-	G = new Graph(12, 14); // 12, 14
+
 
 	zoom_menu = glutCreateMenu(zoom);
 		glutAddMenuEntry("Zoom In   (w)", 1);
@@ -225,10 +232,10 @@ int main(int argc, char **argv) {
        	glutAddMenuEntry("Exit", 4);
 	glutAttachMenu (GLUT_RIGHT_BUTTON);
 
-	G = new Graph(4, 3);
+	G = new Graph(12, 14);
 	G->topological_sort();
+
 	Inicializa();
-	//CriarMenu();
 	glutMainLoop();
 	return 0;
 }
