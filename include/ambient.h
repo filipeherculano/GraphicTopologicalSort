@@ -1,5 +1,6 @@
 #include <vector>
 #include <utility>
+#include <GL/glut.h>
 
 using namespace std;
 
@@ -16,14 +17,14 @@ public:
   /**
    * @brief Draw function
    */
-  void draw();
+  void draw(GLuint _textureId);
 
 private:
   /**
    * @brief Draws field with specified radius
    * @param radius 
    */
-  void draw_field(int radius);
+  void draw_field(int radius, GLuint _textureId);
 
   /**
    * @brief Draw a number of stars

@@ -32,7 +32,7 @@ class Graph
 	/**
 	 * @brief Draws plane
 	 */
-	void draw_plane();
+	void draw_plane(GLuint _textureId);
 
 	/**
 	 * @brief Calls each vertex drawing function

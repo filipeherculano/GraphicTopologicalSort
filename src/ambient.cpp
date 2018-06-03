@@ -1,29 +1,43 @@
 #include "../include/ambient.h"
-
 #include <iostream>
-
 #include <GL/glut.h>
+ 
 
 Ambient::Ambient(int stars, int radius) : stars_(stars), radius_(radius)
 {
 }
 
-void Ambient::draw()
+void Ambient::draw(GLuint _textureId)
 {
-    draw_field(radius_);
+    draw_field(radius_, _textureId);
     draw_sky(stars_);
 }
 
-void Ambient::draw_field(int radius)
-{
-    // TODO(filipe.herculano) : Create circular plane
+void Ambient::draw_field(int radius, GLuint _textureId) {
+
+    glEnable(GL_TEXTURE_2D);
+	glBindTexture(GL_TEXTURE_2D, _textureId);
+
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+
     glColor3f(0.0, 1.0, 0.0);
     glBegin(GL_QUADS);
+    glNormal3f(0.0, 1.0f, 0.0f);
+    glTexCoord2f(0.0f, 0.0f);
     glVertex3i(radius, -6, radius);
+
+    glTexCoord2f(1.0f, 0.0f);
     glVertex3i(-radius, -6, radius);
+
+    glTexCoord2f(1.0f, 1.0f);
     glVertex3i(-radius, -6, -radius);
+
+    glTexCoord2f(0.0f, 1.0f);
     glVertex3i(radius, -6, -radius);
     glEnd();
+
+    glDisable(GL_TEXTURE_2D);
 }
 
 void Ambient::draw_sky(int stars)
