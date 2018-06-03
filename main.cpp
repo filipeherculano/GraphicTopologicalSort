@@ -226,6 +226,7 @@ int main(int argc, char **argv) {
 		glutAddMenuEntry("Right  (k)", 4);
 
 	glutCreateMenu(mainMenu);
+		glutAddMenuEntry("Insert Node   (i)", 0);
 		glutAddMenuEntry("Remove Node       (n)", 1);
        	glutAddSubMenu("Zoom", zoom_menu);
 		glutAddSubMenu("Lighting", lighting_menu);
@@ -266,19 +267,22 @@ void zoomOut(void) {
 /* main popup menu - actions */
 void mainMenu (int id) {
     switch (id) {
-		case 1 :
+		case 0:
+			drawDfs();
+			break;
+		case 1:
 			destroyNode();
 			break;
-		case 2 :
+		case 2:
 			zoomIn();
 			break;
-		case 3 :
+		case 3:
 			zoomOut();
 			break;
-		case 4 :
-			exit (0);
+		case 4:
+			exit(0);
 			break;
-		default :
+		default:
 			break;
     }
 }
