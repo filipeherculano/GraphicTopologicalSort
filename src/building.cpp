@@ -7,7 +7,81 @@ Building::Building(int x, int y, int z, int side, int height)
 {
 }
 
-void Building::draw()
+void drawCube(GLuint _buildTextId){
+
+	glEnable(GL_TEXTURE_2D);
+	glBindTexture(GL_TEXTURE_2D, _buildTextId);
+
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+
+	glBegin(GL_QUADS);                // Begin drawing the color cube with 6 quads
+      // Top face (y = 6.0f)
+      // Define vertices in counter-clockwise (CCW) order with normal pointing out
+      glNormal3f(0.0, 1.0f, 0.0f);
+      glTexCoord2f(0.0f, 0.0f);
+      glVertex3f( 6.0f, 6.0f, -6.0f);
+	  glTexCoord2f(1.0f, 0.0f);
+      glVertex3f(-6.0f, 6.0f, -6.0f);
+	  glTexCoord2f(1.0f, 1.0f);
+      glVertex3f(-6.0f, 6.0f,  6.0f);
+	  glTexCoord2f(0.0f, 1.0f);
+      glVertex3f( 6.0f, 6.0f,  6.0f);
+ 
+      // Bottom face (y = -6.0f)
+      glTexCoord2f(0.0f, 0.0f);
+      glVertex3f( 6.0f, -6.0f,  6.0f);
+	  glTexCoord2f(1.0f, 0.0f);
+      glVertex3f(-6.0f, -6.0f,  6.0f);
+	  glTexCoord2f(1.0f, 1.0f);
+      glVertex3f(-6.0f, -6.0f, -6.0f);
+	  glTexCoord2f(0.0f, 1.0f);
+      glVertex3f( 6.0f, -6.0f, -6.0f);
+ 
+      // Front face  (z = 6.0f)
+      glTexCoord2f(0.0f, 0.0f);
+      glVertex3f( 6.0f,  6.0f, 6.0f);
+	  glTexCoord2f(1.0f, 0.0f);
+      glVertex3f(-6.0f,  6.0f, 6.0f);
+	  glTexCoord2f(1.0f, 1.0f);
+      glVertex3f(-6.0f, -6.0f, 6.0f);
+	  glTexCoord2f(0.0f, 1.0f);
+      glVertex3f( 6.0f, -6.0f, 6.0f);
+ 
+      // Back face (z = -6.0f)
+      glTexCoord2f(0.0f, 0.0f);
+      glVertex3f( 6.0f, -6.0f, -6.0f);
+	  glTexCoord2f(1.0f, 0.0f);
+      glVertex3f(-6.0f, -6.0f, -6.0f);
+	  glTexCoord2f(1.0f, 1.0f);
+      glVertex3f(-6.0f,  6.0f, -6.0f);
+	  glTexCoord2f(0.0f, 1.0f);
+      glVertex3f( 6.0f,  6.0f, -6.0f);
+ 
+      // Left face (x = -6.0f)
+      glTexCoord2f(0.0f, 0.0f);
+      glVertex3f(-6.0f,  6.0f,  6.0f);
+	  glTexCoord2f(1.0f, 0.0f);
+      glVertex3f(-6.0f,  6.0f, -6.0f);
+	  glTexCoord2f(1.0f, 1.0f);
+      glVertex3f(-6.0f, -6.0f, -6.0f);
+	  glTexCoord2f(0.0f, 1.0f);
+      glVertex3f(-6.0f, -6.0f,  6.0f);
+ 
+      // Right face (x = 6.0f)
+      glTexCoord2f(0.0f, 0.0f);
+      glVertex3f(6.0f,  6.0f, -6.0f);
+	  glTexCoord2f(1.0f, 0.0f);
+      glVertex3f(6.0f,  6.0f,  6.0f);
+	  glTexCoord2f(1.0f, 1.0f);
+      glVertex3f(6.0f, -6.0f,  6.0f);
+	  glTexCoord2f(0.0f, 1.0f);
+      glVertex3f(6.0f, -6.0f, -6.0f);
+   glEnd();  // End of drawing color-cube
+   glDisable(GL_TEXTURE_2D);
+}
+
+void Building::draw(GLuint _buildTextId)
 {
 	// TODO we are missing windows!
 	update_state();
@@ -18,13 +92,17 @@ void Building::draw()
 		y_++;
 		glColor3f(0.3, 1.0 + ((double)y_ * 0.05), 0.3);
 		glTranslatef(x_, y_, z_);
-		glutSolidCube(side_);
+		//glutSolidCube(side_);
+
+		drawCube(_buildTextId);
+
+
 		glTranslatef(-x_, -y_, -z_);
 		break;
 	case ALIVE:
 		glColor3f(0.8, 0.8, 0.8);
 		glTranslatef(x_, y_, z_);
-		glutSolidCube(side_);
+		drawCube(_buildTextId);
 		glTranslatef(-x_, -y_, -z_);
 		break;
 	case DESTROYING:

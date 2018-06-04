@@ -1,4 +1,5 @@
 #include "include/graph.h"
+#include "include/imageloader.h"
 
 #include <GL/glut.h>
 
@@ -52,6 +53,26 @@ void moveLight(int id);
 void zoomIn(void);
 void zoomOut(void);
 
+//Makes the image into a texture, and returns the id of the texture
+GLuint loadTexture(Image* image) {
+	GLuint textureId;
+	glGenTextures(1, &textureId); //Make room for our texture
+	glBindTexture(GL_TEXTURE_2D, textureId); //Tell OpenGL which texture to edit
+	//Map the image to the texture
+	glTexImage2D(GL_TEXTURE_2D,                //Always GL_TEXTURE_2D
+				 0,                            //0 for now
+				 GL_RGB,                       //Format OpenGL uses for image
+				 image->width, image->height,  //Width and height
+				 0,                            //The border of the image
+				 GL_RGB, //GL_RGB, because pixels are stored in RGB format
+				 GL_UNSIGNED_BYTE, //GL_UNSIGNED_BYTE, because pixels are stored
+				                   //as unsigned numbers
+				 image->pixels);               //The actual pixel data
+	return textureId; //Returns the id of the texture
+}
+
+GLuint _grassTextId, _bricksTextId; //The id of the texture
+
 void Iluminacao()
 {
 	GLfloat luzAmbiente[4] = {0.0, 0.0, 0.0, 1.0};
@@ -101,13 +122,11 @@ void Draw()
 	glRotated(rotationY, 1.0, 0.0, 0.0);
 	glRotated(rotationX, 0.0, 1.0, 0.0);
 	glScaled(scale_x, scale_y, scale_z);
+	
 
-	// Iluminacao();
-
-	G->draw_vertex();
+	G->draw_vertex(_bricksTextId);
 	G->draw_edges();
-	G->draw_plane();
-
+	G->draw_plane(_grassTextId);
 	glutSwapBuffers();
     angle++; //increase the anglessss
 }
@@ -170,10 +189,10 @@ void specialKeys(unsigned char key, int x, int y) {
 void Mouse_Motion(int x, int y)
 {
 	rotationX += (double)(x - last_press_x);
-	rotationY += (double)(y - last_press_y);
+	//rotationY += (double)(y - last_press_y);
 
 	last_press_x = x;
-	last_press_y = y;
+	//last_press_y = y;
 
 	glutPostRedisplay();
 }
@@ -196,6 +215,15 @@ void Inicializa()
 	glEnable(GL_LIGHT0);
 	glEnable(GL_COLOR_MATERIAL);
 	glEnable(GL_LIGHTING);
+
+	Image* image1 = loadBMP("img/grass.bmp");
+	_grassTextId = loadTexture(image1);
+	delete image1;
+
+	Image* buildText = loadBMP("img/wall.bmp");
+	_bricksTextId = loadTexture(buildText);
+	delete buildText;
+
 
 	glShadeModel(GL_SMOOTH);
 }

@@ -1,6 +1,7 @@
 #include "../include/graph.h"
 
 #include <bits/stdc++.h>
+#include <GL/glut.h>
 
 Graph::Graph(int n, int m) : number_nodes_(n), number_edges_(m), ambient_(Ambient(50, 100))
 {
@@ -93,15 +94,15 @@ void Graph::draw_edges()
 		edges_[i].draw();
 }
 
-void Graph::draw_vertex()
+void Graph::draw_vertex(GLuint _buildTextId)
 {
 	for (int i = 0; i < number_nodes_; i++)
-		buildings_[i].draw();
+		buildings_[i].draw(_buildTextId);
 }
 
-void Graph::draw_plane()
+void Graph::draw_plane(GLuint _textureId)
 {
-	ambient_.draw();
+	ambient_.draw(_textureId);
 }
 
 void Graph::destroy_node()
