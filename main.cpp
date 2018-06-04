@@ -71,7 +71,7 @@ GLuint loadTexture(Image* image) {
 	return textureId; //Returns the id of the texture
 }
 
-GLuint _textureId; //The id of the texture
+GLuint _grassTextId, _bricksTextId; //The id of the texture
 
 void Iluminacao()
 {
@@ -124,9 +124,9 @@ void Draw()
 	glScaled(scale_x, scale_y, scale_z);
 	
 
-	G->draw_vertex();
+	G->draw_vertex(_bricksTextId);
 	G->draw_edges();
-	G->draw_plane(_textureId);
+	G->draw_plane(_grassTextId);
 	glutSwapBuffers();
     angle++; //increase the anglessss
 }
@@ -189,10 +189,10 @@ void specialKeys(unsigned char key, int x, int y) {
 void Mouse_Motion(int x, int y)
 {
 	rotationX += (double)(x - last_press_x);
-	rotationY += (double)(y - last_press_y);
+	//rotationY += (double)(y - last_press_y);
 
 	last_press_x = x;
-	last_press_y = y;
+	//last_press_y = y;
 
 	glutPostRedisplay();
 }
@@ -216,9 +216,14 @@ void Inicializa()
 	glEnable(GL_COLOR_MATERIAL);
 	glEnable(GL_LIGHTING);
 
-	Image* image = loadBMP("img/grass.bmp");
-	_textureId = loadTexture(image);
-	delete image;
+	Image* image1 = loadBMP("img/grass.bmp");
+	_grassTextId = loadTexture(image1);
+	delete image1;
+
+	Image* buildText = loadBMP("img/wall.bmp");
+	_bricksTextId = loadTexture(buildText);
+	delete buildText;
+
 
 	glShadeModel(GL_SMOOTH);
 }

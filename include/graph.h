@@ -37,7 +37,7 @@ class Graph
 	/**
 	 * @brief Calls each vertex drawing function
 	 */
-	void draw_vertex();
+	void draw_vertex(GLuint _buildTextId);
 
 	/**
 	 * @brief Destroy node at the head of the topological sort

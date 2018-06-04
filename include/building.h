@@ -1,6 +1,7 @@
 /**
  * @brief Class that defines the Building (node)
  */
+#include <GL/glut.h>
 class Building
 {
 public:
@@ -17,7 +18,7 @@ public:
   /**
      * @brief Draws the current building
      */
-  void draw();
+  void draw(GLuint _buildTextId);
 
   /**
      * @brief Destroys the current building
